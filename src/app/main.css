@@ -1,0 +1,36 @@
+.main {
+  height: 100vh;
+  width: 100vw;
+  background-color: #212121;
+  overflow: hidden;
+}
+
+h1, h2 {
+  color: #edf6f9;
+}
+
+.title {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  background-color: #219ebc;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.buttons.play {
+  background-color: #ffb703; /* Play button color */
+}
+

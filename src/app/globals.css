@@ -2,17 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import url("https://fonts.googleapis.com/css2?family=Gluten:wght@100..900&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
-
-.gluten-800 {
-  font-family: "Gluten", cursive;
-  font-optical-sizing: auto;
-  font-weight: 800;
-  font-style: normal;
-  font-variation-settings: "slnt" 0;
-}
 
 .inter-400 {
   font-family: "Inter", sans-serif;

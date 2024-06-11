@@ -1,81 +1,64 @@
-// "use client";
-// import { useEffect, useRef, useState } from "react";
-// import WebApp from '@twa-dev/sdk'
-// import "./game.css";
-
-// export default function Home() {
-//   const [isGreen, setIsGreen] = useState<boolean>(false)
-//   const [total, setTotal] = useState<number>(0);
-//   const [ballY, setBallY] = useState(0);
-//   const [isFalling, setIsFalling] = useState<boolean>(false);
-
-//   const ballRef = useRef(null);
-
-//   const jumpHeight = 250;
-//   const fallTimeout = 100; // time before ball starts to fall
-
-//   const onClick = () => {
-//     setIsFalling(false);
-//     setBallY(ballY + jumpHeight);
-//     setTotal((prevState) => prevState + 1);
-
-//     setTimeout(() => setIsFalling(true), fallTimeout); // Start falling after timeout
-//   };
-
-//   useEffect(() => console.log(`falling: ${isFalling}`), [isFalling])
-
-//   useEffect(() => {
-//     let animationFrameId: number;
-
-//     const animateFall = () => {
-//       if (isFalling && ballY > 0) {
-//         const newBallY = Math.max(ballY - 5, 0); // Fall 5px per frame, but not below 0
-//         setBallY(newBallY);
-//         animationFrameId = requestAnimationFrame(animateFall);
-//       }
-//     };
-
-//     if (isFalling) {
-//       animationFrameId = requestAnimationFrame(animateFall);
-//     }
-
-//     return () => {
-//       cancelAnimationFrame(animationFrameId); // Clean up animation on component unmount
-//     };
-//   }, [isFalling, ballY]);
-
-//   return (
-//     <main onClick={() => setIsGreen(!isGreen)}>
-//       <h1 className="gluten-800">Touch the ball to change color!</h1>
-//       <p>total {total}</p>
-//       <div
-//         className={`ball ${isGreen ? "green":"purple"}`}
-//         ref={ballRef}
-//         style={{ bottom: ballY }}
-//       />
-//       <div className="line"></div>
-//     </main>
-//   );
-// }
-
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
+import GameView from "@/components/gameVIew/GameView";
+import StartView from "@/components/startView/StartView";
+import EndView from "@/components/endView/EndView";
 import WebApp from "@twa-dev/sdk";
-import "./game.css";
+import "./main.css";
 
-export default function Home() {
-  const [isGreen, setIsGreen] = useState<boolean>(false);
+const GameMain = () => {
+  const [touches, setTouches] = useState<number>(0);
+  const [appState, setAppState] = useState<"start" | "game" | "end">("start");
+  const [position, setPosition] = useState(95);
+  const [falling, setFalling] = useState(false);
 
   useEffect(() => {
-    WebApp.ready();
-  }, []);
+    if (falling) {
+      const interval = setInterval(() => {
+        setPosition((prev) => {
+          if (prev >= 95) {
+            clearInterval(interval);
+            setAppState("end");
+            return prev;
+          }
+          return prev + 0.5;
+        });
+      }, 10);
 
-  const handleTouch = () => setIsGreen(!isGreen);
+      return () => clearInterval(interval);
+    }
+  }, [falling]);
+
+  const handleClick = () => {
+    if (appState === "end") return;
+    setFalling(false);
+    setTouches((prev) => prev + 1);
+    setPosition((prev) => Math.max(0, prev - 30));
+    setTimeout(() => setFalling(true), 100);
+  };
+
+  const clickPlay = () => {
+    setAppState("game");
+  };
+  const clickExit = () => {};
 
   return (
-    <main onClick={handleTouch}>
-      <h1 className="gluten-800">Touch the ball to change color!</h1>
-      <div className={`ball ${isGreen ? "green" : "purple"}`} />
-    </main>
+    <div className="main">
+      {appState === "start" && (
+        <StartView clickExit={clickExit} clickPlay={clickPlay} />
+      )}
+      {appState === "game" && (
+        <GameView touches={touches} position={position} onBallClick={handleClick} />
+      )}
+      {appState === "end" && (
+        <EndView
+          totalTouches={touches}
+          clickPlay={clickPlay}
+          clickExit={clickExit}
+        />
+      )}
+    </div>
   );
-}
+};
+
+export default GameMain;
