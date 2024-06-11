@@ -1,0 +1,50 @@
+main {
+  height: 100vh;
+  position: relative;
+  background-color: #212121;
+}
+
+h1 {
+  color: #edf6f9;
+  font-size: 24px;
+  text-align: center;
+  padding-top: 32px;
+}
+/* 
+h2 {
+  color: #edf6f9;
+  font-size: 24px;
+  text-align: center;
+  padding-top: 64px;
+} */
+
+.ball {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #82e4bc;
+  transition: bottom ease 0.5s;
+}
+
+.ball.purple {
+  background-color: #9372ff;
+}
+
+/* .line {
+  border-radius: 16px;
+  width: 90%;
+  height: 10px;
+  background-color: #9372ff;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  margin-bottom: 16px;
+} */
