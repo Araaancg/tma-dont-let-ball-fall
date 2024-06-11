@@ -9,7 +9,6 @@ const GameView = ({
   onBallClick: () => void;
   touches: number;
 }) => {
-
   return (
     <div className="gameArea" onClick={onBallClick}>
       <span className="touches">touches: {touches}</span>

@@ -11,29 +11,27 @@ const GameMain = () => {
   const [appState, setAppState] = useState<"start" | "game" | "end">("start");
   const [position, setPosition] = useState(95);
   const [falling, setFalling] = useState(false);
+  // WebApp.ready();
 
-  useEffect(() => {
-    // Initialize Telegram WebApp
-    WebApp.ready();
+  // useEffect(() => {
+  //   // Initialize Telegram WebApp
     
-    const handleBackButton = () => {
-      if (appState === "game") {
-        setAppState("start");
-      } else if (appState === "end") {
-        setAppState("start");
-      } else {
-        WebApp.close();
-      }
-    };
+  //   const handleBackButton = () => {
+  //     if (appState === "game") {
+  //       setAppState("start");
+  //     } else if (appState === "end") {
+  //       setAppState("start");
+  //     } else {
+  //       WebApp.close();
+  //     }
+  //   };
 
-    // Set the back button callback
-    WebApp.onEvent('backButtonClicked', handleBackButton);
+  //   WebApp.onEvent('backButtonClicked', handleBackButton);
 
-    // Cleanup on unmount
-    return () => {
-      WebApp.offEvent('backButtonClicked', handleBackButton);
-    };
-  }, [appState]);
+  //   return () => {
+  //     WebApp.offEvent('backButtonClicked', handleBackButton);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (falling) {
@@ -65,7 +63,7 @@ const GameMain = () => {
   };
 
   const clickExit = () => {
-    WebApp.close();
+    // WebApp.close();
   };
 
   return (
