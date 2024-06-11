@@ -13,29 +13,27 @@ const GameMain = () => {
   const [falling, setFalling] = useState(false);
 
   useEffect(() => {
-    const initializeBot = async () => {
-      if (WebApp.initDataUnsafe?.query_id) {
-        try {
-          const response = await fetch("/api/sendMessage", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              queryId: WebApp.initDataUnsafe.query_id,
-              message: "Hi! Welcome to the game! The only rule: You can NOT let the ball fall",
-              buttonUrl: "t.me/AranchasBot/aransFootballGame", // Replace with actual URL
-            }),
-          });
-          const data = await response.json();
-          console.log("Bot response:", data);
-        } catch (error) {
-          console.error("Error sending message:", error);
-        }
+    // Initialize Telegram WebApp
+    WebApp.ready();
+    
+    const handleBackButton = () => {
+      if (appState === "game") {
+        setAppState("start");
+      } else if (appState === "end") {
+        setAppState("start");
+      } else {
+        WebApp.close();
       }
     };
-    initializeBot();
-  }, []);
+
+    // Set the back button callback
+    WebApp.onEvent('backButtonClicked', handleBackButton);
+
+    // Cleanup on unmount
+    return () => {
+      WebApp.offEvent('backButtonClicked', handleBackButton);
+    };
+  }, [appState]);
 
   useEffect(() => {
     if (falling) {
@@ -65,7 +63,10 @@ const GameMain = () => {
   const clickPlay = () => {
     setAppState("game");
   };
-  const clickExit = () => {};
+
+  const clickExit = () => {
+    WebApp.close();
+  };
 
   return (
     <div className="main">
