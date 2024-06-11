@@ -13,6 +13,31 @@ const GameMain = () => {
   const [falling, setFalling] = useState(false);
 
   useEffect(() => {
+    const initializeBot = async () => {
+      if (WebApp.initDataUnsafe?.query_id) {
+        try {
+          const response = await fetch("/api/sendMessage", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              queryId: WebApp.initDataUnsafe.query_id,
+              message: "Hi! Welcome to the game! The only rule: You can NOT let the ball fall",
+              buttonUrl: "t.me/AranchasBot/aransFootballGame", // Replace with actual URL
+            }),
+          });
+          const data = await response.json();
+          console.log("Bot response:", data);
+        } catch (error) {
+          console.error("Error sending message:", error);
+        }
+      }
+    };
+    initializeBot();
+  }, []);
+
+  useEffect(() => {
     if (falling) {
       const interval = setInterval(() => {
         setPosition((prev) => {
