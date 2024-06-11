@@ -9,7 +9,7 @@ const StartView = ({
 }) => {
   return (
     <div className="startView">
-      <h1 className="title">Don't let the ball fall!</h1>
+      <h1 className="title">Don&apos;t let the ball fall!</h1>
       <div>
         <button
           className="buttons play"
