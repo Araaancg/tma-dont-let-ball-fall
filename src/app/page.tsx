@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import GameView from "@/components/gameVIew/GameView";
 import StartView from "@/components/startView/StartView";
 import EndView from "@/components/endView/EndView";
-import WebApp from "@twa-dev/sdk";
 import "./main.css";
 
 const GameMain = () => {
@@ -11,27 +10,6 @@ const GameMain = () => {
   const [appState, setAppState] = useState<"start" | "game" | "end">("start");
   const [position, setPosition] = useState(95);
   const [falling, setFalling] = useState(false);
-  // WebApp.ready();
-
-  // useEffect(() => {
-  //   // Initialize Telegram WebApp
-    
-  //   const handleBackButton = () => {
-  //     if (appState === "game") {
-  //       setAppState("start");
-  //     } else if (appState === "end") {
-  //       setAppState("start");
-  //     } else {
-  //       WebApp.close();
-  //     }
-  //   };
-
-  //   WebApp.onEvent('backButtonClicked', handleBackButton);
-
-  //   return () => {
-  //     WebApp.offEvent('backButtonClicked', handleBackButton);
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (falling) {
@@ -62,25 +40,13 @@ const GameMain = () => {
     setAppState("game");
   };
 
-  const clickExit = () => {
-    // WebApp.close();
-  };
+  const clickExit = () => {};
 
   return (
     <div className="main">
-      {appState === "start" && (
-        <StartView clickExit={clickExit} clickPlay={clickPlay} />
-      )}
-      {appState === "game" && (
-        <GameView touches={touches} position={position} onBallClick={handleClick} />
-      )}
-      {appState === "end" && (
-        <EndView
-          totalTouches={touches}
-          clickPlay={clickPlay}
-          clickExit={clickExit}
-        />
-      )}
+      {appState === "start" && <StartView clickExit={clickExit} clickPlay={clickPlay} />}
+      {appState === "game" && <GameView touches={touches} position={position} onBallClick={handleClick} />}
+      {appState === "end" && <EndView totalTouches={touches} clickPlay={clickPlay} clickExit={clickExit} />}
     </div>
   );
 };
