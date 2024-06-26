@@ -16,28 +16,28 @@ import type { AppProps } from "next/app";
 import { type FC, useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-const BackButtonManipulator: FC = () => {
-  const router = useRouter();
-  const bb = useBackButton(true);
-  const pathname = usePathname();
+// const BackButtonManipulator: FC = () => {
+//   const router = useRouter();
+//   const bb = useBackButton(true);
+//   const pathname = usePathname();
 
-  useEffect(() => {
-    if (!bb) {
-      return;
-    }
-    if (pathname === "/") {
-      bb.hide();
-    } else {
-      bb.show();
-    }
-  }, [router, bb]);
+//   useEffect(() => {
+//     if (!bb) {
+//       return;
+//     }
+//     if (pathname === "/") {
+//       bb.hide();
+//     } else {
+//       bb.show();
+//     }
+//   }, [router, bb]);
 
-  useEffect(() => {
-    return bb && bb.on("click", router.back);
-  }, [bb, router.back]);
+//   useEffect(() => {
+//     return bb && bb.on("click", router.back);
+//   }, [bb, router.back]);
 
-  return null;
-};
+//   return null;
+// };
 
 interface IAppPropsType {
   children: ReactNode;
@@ -45,28 +45,23 @@ interface IAppPropsType {
 
 const App: FC<IAppPropsType> = ({ children }) => {
   console.log("App!!");
-  const miniApp = useMiniApp(true);
-  const themeParams = useThemeParams(true);
-  const viewport = useViewport(true);
+  // const miniApp = useMiniApp(true);
+  // const themeParams = useThemeParams(true);
+  // const viewport = useViewport(true);
 
-  useEffect(() => {
-    return miniApp && themeParams && bindMiniAppCSSVars(miniApp, themeParams);
-  }, [miniApp, themeParams]);
+  // useEffect(() => {
+  //   return miniApp && themeParams && bindMiniAppCSSVars(miniApp, themeParams);
+  // }, [miniApp, themeParams]);
 
-  useEffect(() => {
-    return themeParams && bindThemeParamsCSSVars(themeParams);
-  }, [themeParams]);
+  // useEffect(() => {
+  //   return themeParams && bindThemeParamsCSSVars(themeParams);
+  // }, [themeParams]);
 
-  useEffect(() => {
-    return viewport && bindViewportCSSVars(viewport);
-  }, [viewport]);
+  // useEffect(() => {
+  //   return viewport && bindViewportCSSVars(viewport);
+  // }, [viewport]);
 
-  return (
-    <SDKProvider acceptCustomStyles debug={true}>
-      <BackButtonManipulator />
-      {children}
-    </SDKProvider>
-  );
+  return <SDKProvider acceptCustomStyles>{children}</SDKProvider>;
 };
 
 export default App;
