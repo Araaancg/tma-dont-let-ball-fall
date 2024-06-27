@@ -1,4 +1,4 @@
-import { isRGB, type RGB as RGBType, type User } from "@tma.js/sdk-react";
+import { isRGB, type RGB as RGBType, type User, type InitData } from "@tma.js/sdk-react";
 import type { FC, ReactNode } from "react";
 
 interface DisplayDataRow {

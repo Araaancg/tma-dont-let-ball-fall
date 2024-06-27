@@ -5,6 +5,7 @@ import StartView from "@/components/startView/StartView";
 import EndView from "@/components/endView/EndView";
 import { useUserData } from "@/hooks/useUserData";
 import "./main.css";
+import { useInitData } from "@tma.js/sdk-react";
 
 const GameMain = () => {
   // GAME
@@ -13,9 +14,15 @@ const GameMain = () => {
   const [position, setPosition] = useState(95);
   const [falling, setFalling] = useState(false);
 
-  const {
-    userData: { firstName },
-  } = useUserData();
+  const initData = useInitData(true);
+
+  const { userData, setUserData } = useUserData();
+
+  useEffect(() => {
+    setUserData(initData?.user);
+  }, [initData, setUserData]);
+
+  console.log(userData);
 
   useEffect(() => {
     if (falling) {
@@ -50,7 +57,9 @@ const GameMain = () => {
 
   return (
     <div className="main">
-      {appState === "start" && <StartView playerName={firstName} clickExit={clickExit} clickPlay={clickPlay} />}
+      {appState === "start" && (
+        <StartView playerName={userData?.firstName} clickExit={clickExit} clickPlay={clickPlay} />
+      )}
       {appState === "game" && <GameView touches={touches} position={position} onBallClick={handleClick} />}
       {appState === "end" && <EndView totalTouches={touches} clickPlay={clickPlay} clickExit={clickExit} />}
     </div>

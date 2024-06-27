@@ -1,41 +1,43 @@
 "use client";
 import React, { createContext, useState, ReactNode } from "react";
-import { SDKProvider, useInitData, type User } from "@tma.js/sdk-react";
+import { SDKProvider, type User, type Chat } from "@tma.js/sdk-react";
 
 interface AppContextProps {
   userData: User;
-  setUserData: React.Dispatch<React.SetStateAction<User>>;
+  setUserData: React.Dispatch<React.SetStateAction<any>>;
+  chatData: Chat;
+  setChatData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const userDataInitialState = {
-  firstName: "",
-  lastName: "",
-  userName: "",
-  id: 0,
+const initDataInitialState = {
+  user: {
+    firstName: "",
+    lastName: "",
+    userName: "",
+    id: 0,
+    languageCode: "en",
+  },
+  chat: {
+    id: 0,
+    type: "",
+    title: "",
+  },
 };
 
 export const AppContext = createContext<AppContextProps>({
-  userData: userDataInitialState,
+  userData: initDataInitialState.user,
   setUserData: () => {},
+  chatData: initDataInitialState.chat,
+  setChatData: () => {},
 });
 
-const AppContextInternalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const initData = useInitData();
-  const [userData, setUserData] = useState(initData?.user || userDataInitialState);
-
-  return <AppContext.Provider value={{ userData, setUserData }}>{children}</AppContext.Provider>;
-};
-
-const SDKInitializer: React.FC<{ children: ReactNode }> = ({ children }) => {
-  return <>{children}</>;
-};
-
 export const AppContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [userData, setUserData] = useState(initDataInitialState.user);
+  const [chatData, setChatData] = useState(initDataInitialState.chat);
+
   return (
-    <SDKProvider acceptCustomStyles>
-      <SDKInitializer>
-        <AppContextInternalProvider>{children}</AppContextInternalProvider>
-      </SDKInitializer>
+    <SDKProvider acceptCustomStyles debug>
+      <AppContext.Provider value={{ userData, setUserData, chatData, setChatData }}>{children}</AppContext.Provider>
     </SDKProvider>
   );
 };
