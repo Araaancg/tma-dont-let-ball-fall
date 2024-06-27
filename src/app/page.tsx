@@ -5,7 +5,7 @@ import StartView from "@/components/startView/StartView";
 import EndView from "@/components/endView/EndView";
 import { useUserData } from "@/hooks/useUserData";
 import "./main.css";
-import { useInitData } from "@tma.js/sdk-react";
+import { bindThemeParamsCSSVars, useInitData, useThemeParams, useViewport } from "@tma.js/sdk-react";
 
 const GameMain = () => {
   // GAME
@@ -15,14 +15,22 @@ const GameMain = () => {
   const [falling, setFalling] = useState(false);
 
   const initData = useInitData(true);
+  const vp = useViewport(true)
+  const themeParams = useThemeParams(true)
 
   const { userData, setUserData } = useUserData();
 
   useEffect(() => {
     setUserData(initData?.user);
-  }, [initData, setUserData]);
+    console.log("viewport", vp?.height, vp?.isExpanded)
+    vp && vp?.expand()
+  }, [initData, setUserData, vp]);
 
-  console.log(userData);
+  useEffect(() => {
+    console.log("themeParams", themeParams?.getState())
+    return themeParams && bindThemeParamsCSSVars(themeParams);
+  }, [themeParams]);
+
 
   useEffect(() => {
     if (falling) {
