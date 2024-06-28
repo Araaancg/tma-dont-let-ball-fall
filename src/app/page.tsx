@@ -40,6 +40,9 @@ const HomePage = () => {
           <Link href="/game" className="buttons play">
             Start Game!!
           </Link>
+          <Link href="/wallet" className="buttons play">
+            Connect Wallet
+          </Link>
           <button className="buttons exit" onClick={handleExit}>
             Exit
           </button>
