@@ -1,6 +1,7 @@
 "use client";
-import React, { createContext, useState, ReactNode } from "react";
-import { SDKProvider, type User, type Chat } from "@tma.js/sdk-react";
+import React, { createContext, useState, ReactNode, useMemo } from "react";
+import { SDKProvider, type User, type Chat, isSSR } from "@tma.js/sdk-react";
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
 interface AppContextProps {
   userData: User;
@@ -31,13 +32,27 @@ export const AppContext = createContext<AppContextProps>({
   setChatData: () => {},
 });
 
-export const AppContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [userData, setUserData] = useState(initDataInitialState.user);
   const [chatData, setChatData] = useState(initDataInitialState.chat);
 
+  const manifestUrl = useMemo(() => {
+    return isSSR()
+      ? ""
+      : new URL("tonconnect-manifest.json", window.location.href).toString();
+  }, []);
+
   return (
-    <SDKProvider acceptCustomStyles debug>
-      <AppContext.Provider value={{ userData, setUserData, chatData, setChatData }}>{children}</AppContext.Provider>
-    </SDKProvider>
+    <TonConnectUIProvider manifestUrl={manifestUrl}>
+      <SDKProvider acceptCustomStyles debug>
+        <AppContext.Provider
+          value={{ userData, setUserData, chatData, setChatData }}
+        >
+          {children}
+        </AppContext.Provider>
+      </SDKProvider>
+    </TonConnectUIProvider>
   );
 };
