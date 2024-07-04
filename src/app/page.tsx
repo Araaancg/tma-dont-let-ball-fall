@@ -2,13 +2,16 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { useUserData } from "@/hooks/useUserData";
-import { useInitData } from "@tma.js/sdk-react";
+import "./main.css";
+import { bindThemeParamsCSSVars, useInitData, useThemeParams, useViewport } from "@tma.js/sdk-react";
 import { initPopup, initMiniApp } from "@tma.js/sdk";
 import "./main.css";
 import "../components/startView/startView.css";
 
 const HomePage = () => {
   const initData = useInitData(true);
+  const vp = useViewport(true)
+  const themeParams = useThemeParams(true)
 
   const popup = initPopup();
   const [miniApp] = initMiniApp();
